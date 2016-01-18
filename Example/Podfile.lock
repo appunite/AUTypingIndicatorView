@@ -1,0 +1,14 @@
+PODS:
+  - AUTypingIndicatorView (1.0.0)
+
+DEPENDENCIES:
+  - AUTypingIndicatorView (from `../`)
+
+EXTERNAL SOURCES:
+  AUTypingIndicatorView:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  AUTypingIndicatorView: 80e5898fe2035d90922dd26b95bbc2e08a41483e
+
+COCOAPODS: 0.39.0
