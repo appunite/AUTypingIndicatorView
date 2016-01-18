@@ -7,6 +7,11 @@
 
 #import "AUTypingIndicatorView.h"
 
+@interface AUTypingIndicatorView ()
+@property (nonatomic, strong) CALayer *dotLayer;
+@property (nonatomic, strong) CAReplicatorLayer *dotReplicator;
+@end
+
 @implementation AUTypingIndicatorView
 
 - (instancetype)init {
@@ -39,18 +44,32 @@
     self.interval = 1.8f;
 }
 
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    // content width
+    CGFloat contentWidht = self.dotsCount * self.diameter + (self.dotsCount - 1) * self.padding;
+    
+    // frames
+    self.dotLayer.frame = CGRectMake(CGRectGetMidX(self.bounds) - 0.5f * contentWidht, CGRectGetMidY(self.bounds) - 0.5f * self.diameter, self.diameter, self.diameter);
+    self.dotReplicator.frame = CGRectMake(CGRectGetMidX(self.bounds) - 0.5f * contentWidht, CGRectGetMidY(self.bounds) - 0.5f * self.diameter, contentWidht, self.diameter);
+}
+
 - (void)startAnimation {
+    
+    // content width
+    CGFloat contentWidht = self.dotsCount * self.diameter + (self.dotsCount - 1) * self.padding;
     
     // dot layer
     CALayer *dotLayer = [CALayer layer];
-    dotLayer.frame = CGRectMake(0.0f, CGRectGetMidY(self.bounds) - self.diameter * 0.5f, self.diameter, self.diameter);
+    dotLayer.frame = CGRectMake(CGRectGetMidX(self.bounds) - 0.5f * contentWidht, CGRectGetMidY(self.bounds) - 0.5f * self.diameter, self.diameter, self.diameter);
     dotLayer.cornerRadius = self.diameter * 0.5f;
     dotLayer.position = CGPointZero;
     dotLayer.backgroundColor = self.color.CGColor;
     dotLayer.opacity = 1.0f;
     
     CAReplicatorLayer *dotReplicator = [CAReplicatorLayer layer];
-    [dotReplicator setBounds:self.bounds];
+    [dotReplicator setBounds:CGRectMake(CGRectGetMidX(self.bounds) - 0.5f * contentWidht, CGRectGetMidY(self.bounds) - 0.5f * self.diameter, contentWidht, self.diameter)];
     [dotReplicator setBackgroundColor:[UIColor clearColor].CGColor];
     [dotReplicator setPosition:CGPointZero];
     
@@ -90,6 +109,10 @@
     
     // add animation to layer
     [dotLayer addAnimation:groupAnimation forKey:@"animation"];
+    
+    // assign
+    _dotLayer = dotLayer;
+    _dotReplicator = dotReplicator;
 }
 
 - (void)stopAnimation {
