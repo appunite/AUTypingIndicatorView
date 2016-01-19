@@ -8,8 +8,8 @@
 #import "AUTypingIndicatorView.h"
 
 @interface AUTypingIndicatorView ()
-@property (nonatomic, strong) CALayer *dotLayer;
-@property (nonatomic, strong) CAReplicatorLayer *dotReplicator;
+@property (nonatomic, weak) CALayer *dotLayer;
+@property (nonatomic, weak) CAReplicatorLayer *dotReplicator;
 @end
 
 @implementation AUTypingIndicatorView
@@ -116,7 +116,13 @@
 }
 
 - (void)stopAnimation {
-    // TODO:
+    
+    // remove all animations
+    [self.dotLayer removeAllAnimations];
+    
+    // remove layers
+    [self.dotLayer removeFromSuperlayer];
+    [self.dotReplicator removeFromSuperlayer];
 }
 
 @end
